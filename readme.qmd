@@ -1,0 +1,126 @@
+---
+title: "Hockey Efficiency Ratings"
+format: gfm 
+---
+
+# Introduction
+
+Hello and welcome to my final project for Unstructured Data! In this project, I plan to analyze stats of Hall of Fame Goalie, Martin Brodeur. I plan to scrape data from Hockey Reference in order to get his lifetime career playoff & regular season statistics. I plan on using this information to then create an efficiency score to observe when Brodeur was the most efficient in his career. Additionally, I hope to view the teams that he was most efficient against across his career.
+
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from bs4 import BeautifulSoup
+import requests
+import time
+```
+
+# Data Collection
+```{python}
+brod_playoff_url = "https://www.hockey-reference.com/players/b/brodema01/gamelog/playoffs"
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+}
+hockey_request = requests.get(brod_playoff_url, headers = headers)
+hockey_soup = BeautifulSoup(hockey_request.content, "html.parser")
+
+```
+
+```{python}
+hockey_request 
+clean_html = hockey_request.text.replace('', '')
+
+playoff_stats_table = hockey_soup.find('table', id='gamelog_playoffs')
+
+if playoff_stats_table:
+
+    playoff_tables = pd.read_html(str(playoff_stats_table))
+    
+    brodeur_playoffs_df = playoff_tables[0]
+    
+    brodeur_playoffs_df.columns = brodeur_playoffs_df.columns.droplevel()
+  
+    print(brodeur_playoffs_df.head())
+    
+else:
+    print("Table not found.")
+```
+
+```{python}
+brodeur_playoffs_df = brodeur_playoffs_df.rename(columns={
+    'Rk': 'Rank',
+    'Gcar': 'Games Career',
+    'Gtm': 'Games Team',
+    'Date': 'Date',
+    'Age': 'Age',
+    'Tm': 'Team',
+    'Lg': 'League',
+    'G': 'Games Played',
+    'GS': 'Games Started',
+    'W': 'Wins',
+    'L': 'Losses',
+    'T': 'Ties',
+    'OTL': 'Overtime Losses',
+    'GA': 'Goals Against',
+    'SA': 'Shots Against',
+    'SV': 'Saves',
+    'SV%': 'Save Percentage',
+    'GAA': 'Goals Against Average'
+})
+print(brodeur_playoffs_df.head())
+```
+
+```{python}
+brod_career_url = "https://www.hockey-reference.com/players/b/brodema01/splits/"
+
+brodeur_career_request = requests.get(brod_career_url, headers = headers)
+brodeur_soup = BeautifulSoup(brodeur_career_request.content, "html.parser")
+
+career_stats_table = brodeur_soup.find('table', id='splits')
+
+if career_stats_table:
+
+    career_tables = pd.read_html(str(career_stats_table))
+    
+    brodeur_career_df = career_tables[0]
+    
+    brodeur_career_df = brodeur_career_df.rename(columns={
+        'Rk': 'Rank',
+        'Gcar': 'Games Career',
+        'Gtm': 'Games Team',
+        'Date': 'Date',
+        'Age': 'Age',
+        'Tm': 'Team',
+        'Lg': 'League',
+        'G': 'Games Played',
+        'GS': 'Games Started',
+        'W': 'Wins',
+        'L': 'Losses',
+        'T/O': 'Ties/Overtime Losses',
+        'GA': 'Goals Against',
+        'SA': 'Shots Against',
+        'SV': 'Saves',
+        'SV%': 'Save Percentage',
+        'GAA': 'Goals Against Average',
+        'SO': 'Shutouts',
+        'EV GA': 'Even Strength Goals Against',
+        'PP GA': 'Power Play Goals Against',
+        'SH GA': 'Short Handed Goals Against',
+    })
+  
+    print(brodeur_career_df.head())
+    
+else:
+    print("Table not found.")
+```
+
+
+```{python}
+brodeur_career_df
+```
+
+```{python}
+
+```
