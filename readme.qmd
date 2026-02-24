@@ -18,6 +18,7 @@ import time
 ```
 
 # Data Collection
+Here I am going to be scraping data from Hockey Reference. I will be scraping both Brodeur's regular season and playoff stats. I will then clean the data and prepare it for my analysis and efficiency score calculations. My main form of scraping will be using BeautifulSoup to pull the HTML content of the pages and then using pandas to read the tables into dataframes. 
 ```{python}
 brod_playoff_url = "https://www.hockey-reference.com/players/b/brodema01/gamelog/playoffs"
 headers = {
@@ -73,6 +74,13 @@ print(brodeur_playoffs_df.head())
 ```
 
 ```{python}
+clean_playoff_df = brodeur_playoffs_df[brodeur_playoffs_df['Games Played'] != 'G'].copy()
+clean_playoff_df
+```
+
+Above is the process of the scraping and cleaning of Martin Brodeur's playoff stats. I was able to successfully scrape and pull the data from Hockey Reference. In doing so I acquired data from every playoff game/series that Brodeur played in during the playoffs. The next step will be to repeat this process for his regular season stats, shown below.
+
+```{python}
 brod_career_url = "https://www.hockey-reference.com/players/b/brodema01/splits/"
 
 brodeur_career_request = requests.get(brod_career_url, headers = headers)
@@ -85,7 +93,7 @@ if career_stats_table:
     career_tables = pd.read_html(str(career_stats_table))
     
     brodeur_career_df = career_tables[0]
-    
+
     brodeur_career_df = brodeur_career_df.rename(columns={
         'Rk': 'Rank',
         'Gcar': 'Games Career',
@@ -116,10 +124,23 @@ else:
     print("Table not found.")
 ```
 
+In this step, I was able to successfully scrape Brodeur's regular season stats. I was able to pull data from every regular season game/series that Brodeur played in during his career. The next step will be to clean this data and prepare it for analysis and efficiency score calculations. Additionally, I changed the column names to be easier to read and understand for the sake of my analysis. 
 
 ```{python}
 brodeur_career_df
 ```
+
+Here is the initial dataframe for Brodeur's regular season stats. As you can see, there are some rows that are not actual data but rather header rows that are repeated throughout the dataframe. These rows need to be removed in order to properly analyze the data and calculate efficiency scores.
+
+```{python}
+clean_career_df = brodeur_career_df[brodeur_career_df['GP'] != 'GP'].copy()
+```
+
+```{python}
+clean_career_df
+```
+
+In the above code, we can see the cleaning of the dataframe in order to make things easier to read and view. Without the cleaning there is a lot of stats that are in the columns/rows that are not actually data points, but are actually sub headers that Hockey Reference is using to separate different sections of Brodeur's career. By excluding these, we get a much cleaner and readable dataframe that we can then use for our analysis.
 
 ```{python}
 
