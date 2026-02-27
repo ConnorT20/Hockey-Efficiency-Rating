@@ -31,6 +31,13 @@ if month == "October":
 elif month == "November":
     st.write("November Stats")
     st.dataframe(november_df)
+    st.write("November Efficiency Distribution")
+    plt.figure(figsize=(10, 6))
+    sns.histplot(november_df['Efficiency'], bins=20, kde=True)
+    plt.xlabel("Efficiency")
+    plt.ylabel("Frequency")
+    plt.title("Distribution of Martin Brodeur's Efficiency in November")
+    st.pyplot(plt)
 elif month == "December":
     st.write("December Stats")
     st.dataframe(december_df)
