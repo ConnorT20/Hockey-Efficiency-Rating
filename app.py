@@ -109,10 +109,11 @@ if app_view == "Regular Season":
         st.dataframe(all_months_df)
         st.write("All Months Efficiency Distribution")
         plt.figure(figsize=(10, 6))
-        sns.histplot(all_months_df['Efficiency'], bins=20, kde=True)
-        plt.xlabel("Efficiency")
-        plt.ylabel("Frequency")
-        plt.title("Distribution of Martin Brodeur's Efficiency in All Months")
+        sns.barplot(data=all_months_df, x='Month', y='Efficiency', color='steelblue')
+        plt.ylim(0.85, 1.0) 
+        plt.xlabel("Month")
+        plt.ylabel("Efficiency Score")
+        plt.title("Martin Brodeur's Efficiency Across All Months")
         st.pyplot(plt)
         
 elif app_view == "Playoffs":
