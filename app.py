@@ -7,7 +7,7 @@ import seaborn as sns
 #add a title page for the app
 st.title("Hockey Player Efficiency Analysis")
 #add a description of the app
-st.write("Explore the efficiency of hockey players across different months of the regular season. You can select a month from the sidebar to view the statistics and distribution of efficiency for that month.")
+st.write("Explore the efficiency of hockey players across different months of the regular season, the playoffs, and their careers. You can select a month from the regular season or playoffs from the sidebar. You can also select a player from the dropdown menu to see their stats and efficiency distribution for the selected month or playoff efficiency by year.")
 
 #import the data
 october_df = pd.read_csv("october_stats_df.csv")
