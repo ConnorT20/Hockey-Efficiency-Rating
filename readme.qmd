@@ -147,17 +147,6 @@ clean_career_df
 In the above code, we can see the cleaning of the dataframe in order to make things easier to read and view. Without the cleaning there is a lot of stats that are in the columns/rows that are not actually data points, but are actually sub headers that Hockey Reference is using to separate different sections of Brodeur's career. By excluding these, we get a much cleaner and readable dataframe that we can then use for our analysis. 
 
 ```{python}
-clean_career_df['Win Percentage'] = clean_career_df['Wins'] / clean_career_df['GP']
-
-
-clean_career_df['Raw Score'] = (clean_career_df['Save Percentage'] * 100) + (clean_career_df['Win Percentage'] * 100) - clean_career_df['Goals Against Average']
-
-clean_career_df['Efficiency'] = clean_career_df['Raw Score'] / 2
-```
-
-Here, I have calculated an efficiency score metric for Brodeur's regular season stats. In doing some research on how to calculate an efficiency score for a goalie, there is not one specific way to determine the efficiency. Some recommended that using 'Save Percentage', 'Win Percentage', and 'Goals Against Average' would be a good way to determine the efficiency of a goalie. I decided to use these three stats in order to calculate a raw score, which I then divided by 2 in order to get an efficiency score that is on a more reasonable scale, rather than a score out of 200. 
-
-```{python}
 cols_to_convert = ['Wins', 'GP', 'Save Percentage', 'Goals Against Average']
 
 for col in cols_to_convert:
@@ -174,7 +163,7 @@ clean_career_df['Efficiency'] = clean_career_df['Raw Score'] / 2
 print(clean_career_df[['GP', 'Wins', 'Win Percentage', 'Efficiency']].head())
 ```
 
-In the above code chunk, I picked columns that I wanted to convert to numeric values in order to apply the efficiency score calculations.  
+Here, I have calculated an efficiency score metric for Brodeur's regular season stats. In doing some research on how to calculate an efficiency score for a goalie, there is not one specific way to determine the efficiency. Some recommended that using 'Save Percentage', 'Win Percentage', and 'Goals Against Average' would be a good way to determine the efficiency of a goalie. I decided to use these three stats in order to calculate a raw score, which I then divided by 2 in order to get an efficiency score that is on a more reasonable scale, rather than a score out of 200. I converted these columns to numeric values in order to apply the efficiency score calculations effectively.  
 
 ```{python}
 october_stats_df = clean_career_df[clean_career_df['Value'] == 'October']
@@ -240,6 +229,7 @@ Above is a view of Brodeur's playoff efficiency across 20 games in his playoff c
 I now want to see if there is a way to visualize Brodeur's playoff efficiency across his career, similar to how I visualized his regular season efficiency by month. I will try to plot his efficiency by year in the playoffs to see if there are any trends in his efficiency throughout his playoff career.
 
 ```{python}
+clean_playoff_df['Year'] = pd.to_datetime(clean_playoff_df['Date']).dt.year
 yearly_playoff_df = clean_playoff_df.groupby('Year')['Efficiency'].mean().reset_index()
 
 
@@ -257,5 +247,15 @@ Before getting to analysis of the graph, I want to explain the code chunk above.
 
 It makes sense that in the graph here we can see that Brodeur was most efficient in the years that the New Jersey Devils won the Stanley Cup which was in 1995, 2000, & 2003. It is also interesting to see the fluctuations in his efficiency throughout the years, with some years being much higher than others. It could indicate the different types of teams that Brodeur and the Devils squared off against, the type of teams that the Devils themselves had in a given year, or the stage of Brodeur's career taking its course as he aged.
 
-
-
+```{python}
+clean_career_df.to_csv('clean_career_df.csv', index=False)
+clean_playoff_df.to_csv('clean_playoff_df.csv', index=False)
+yearly_playoff_df.to_csv('yearly_playoff_df.csv', index=False)
+october_stats_df.to_csv('october_stats_df.csv', index=False)
+november_stats_df.to_csv('november_stats_df.csv', index=False)
+december_stats_df.to_csv('december_stats_df.csv', index=False)
+january_stats_df.to_csv('january_stats_df.csv', index=False)
+february_stats_df.to_csv('february_stats_df.csv', index=False)
+march_stats_df.to_csv('march_stats_df.csv', index=False)
+april_stats_df.to_csv('april_stats_df.csv', index=False)
+```

@@ -72,7 +72,7 @@ else:
     3  59:55   1  23     24  .958    0  0  0    0  
     4  60:00   1  29     30  .967    0  0  0    0  
 
-    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_5322/194281229.py:8: FutureWarning:
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_4727/194281229.py:8: FutureWarning:
 
     Passing literal html to 'read_html' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
 
@@ -235,7 +235,7 @@ else:
     3                         34  
     4                      SH GA  
 
-    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_5322/2028733359.py:10: FutureWarning:
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_4727/2028733359.py:10: FutureWarning:
 
     Passing literal html to 'read_html' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
 
@@ -286,9 +286,19 @@ rows that are repeated throughout the dataframe. These rows need to be
 removed in order to properly analyze the data and calculate efficiency
 scores.
 
+# Data Cleaning and Preparation
+
 ``` python
 clean_career_df = brodeur_career_df[brodeur_career_df['GP'] != 'GP'].copy()
 ```
+
+I am excluding the rows where the ‘GP’ column has the value ‘GP’, as
+these are the header rows that are repeated throughout the dataframe. By
+doing this, we can clean the dataframe and make it easier to read and
+analyze. It is removing the rows that are not actual data points, but
+rather sub headers that Hockey Reference is using to separate different
+sections of Brodeur’s career so that we can have cleaner data to work
+with for this observation.
 
 ``` python
 clean_career_df
@@ -376,3 +386,251 @@ but are actually sub headers that Hockey Reference is using to separate
 different sections of Brodeur’s career. By excluding these, we get a
 much cleaner and readable dataframe that we can then use for our
 analysis.
+
+``` python
+cols_to_convert = ['Wins', 'GP', 'Save Percentage', 'Goals Against Average']
+
+for col in cols_to_convert:
+    clean_career_df[col] = pd.to_numeric(clean_career_df[col], errors='coerce')
+
+clean_career_df['Win Percentage'] = clean_career_df['Wins'] / clean_career_df['GP']
+
+clean_career_df['Raw Score'] = (clean_career_df['Save Percentage'] * 100) + \
+ (clean_career_df['Win Percentage'] * 100) - \
+    clean_career_df['Goals Against Average']
+
+clean_career_df['Efficiency'] = clean_career_df['Raw Score'] / 2
+
+print(clean_career_df[['GP', 'Wins', 'Win Percentage', 'Efficiency']].head())
+```
+
+         GP   Wins  Win Percentage  Efficiency
+    0  1266  691.0        0.545814   71.770679
+    2   642  380.0        0.591900   74.060016
+    3   624  311.0        0.498397   69.459872
+    5   788  422.0        0.535533   71.131650
+    6   478  269.0        0.562762   72.808075
+
+Here, I have calculated an efficiency score metric for Brodeur’s regular
+season stats. In doing some research on how to calculate an efficiency
+score for a goalie, there is not one specific way to determine the
+efficiency. Some recommended that using ‘Save Percentage’, ‘Win
+Percentage’, and ‘Goals Against Average’ would be a good way to
+determine the efficiency of a goalie. I decided to use these three stats
+in order to calculate a raw score, which I then divided by 2 in order to
+get an efficiency score that is on a more reasonable scale, rather than
+a score out of 200. I converted these columns to numeric values in order
+to apply the efficiency score calculations effectively.
+
+``` python
+october_stats_df = clean_career_df[clean_career_df['Value'] == 'October']
+november_stats_df = clean_career_df[clean_career_df['Value'] == 'November']
+december_stats_df = clean_career_df[clean_career_df['Value'] == 'December'] 
+january_stats_df = clean_career_df[clean_career_df['Value'] == 'January']
+february_stats_df = clean_career_df[clean_career_df['Value'] == 'February']
+march_stats_df = clean_career_df[clean_career_df['Value'] == 'March']
+april_stats_df = clean_career_df[clean_career_df['Value'] == 'April']
+```
+
+Here, I am separating the stats by month in order to observe if there
+are any trends in Brodeur’s efficiency throughout the different months
+of the season. This will allow me to see if there are certain months
+where Brodeur was more efficient than others, which could be an
+interesting observation to make. In doing some research, I found that a
+good efficiency score for a goalie is typically between 70 and 80 being
+elite, which Brodeur has a lot of seasons where he is in that range,
+which is a testament to his greatness as a goalie.
+
+# Efficiency Visualization and Analysis
+
+``` python
+months_order = ['October', 'November', 'December', 'January', 'February', 'March', 'April']
+monthly_stats = clean_career_df[clean_career_df['Value'].isin(months_order)].copy()
+
+plt.figure(figsize=(10, 6)) 
+plt.plot(monthly_stats['Value'], monthly_stats['Efficiency'], 
+         marker='o', markersize=8, color='#ce1126', linewidth=2) 
+
+plt.title("Martin Brodeur's Efficiency Over the Course of a Typical Season", fontsize=12)
+plt.xlabel("Month", fontsize=12)
+plt.ylabel("Relative Efficiency Score", fontsize=12)
+plt.show()
+```
+
+![](readme_files/figure-commonmark/cell-13-output-1.png)
+
+In the above code chunk, I am plotting Brodeur’s efficiency over the
+course of a typical season by month. This will allow us to visually
+observe any trends in his efficiency throughout the different months of
+the season. We can see that there are some fluctuations in his
+efficiency, but overall he maintains a relatively high level of
+efficiency throughout the season, which is impressive considering the
+length of his career and the number of games he played. It is
+interesting that over the course of his career, Brodeur’s efficiency
+tanks in March, but is the highest in April. This could be due to the
+fact that April typically has less games, but also begins the playoffs
+which is where Brodeur was known to be great.
+
+Next, I want to run similar efficiency score calculations for Brodeur’s
+playoff stats in order to see what his efficiency was like in the
+playoffs, and if there are any trends in his efficiency throughout the
+different rounds of the playoffs.
+
+``` python
+clean_playoff_df['Wins'] = clean_playoff_df['Result'].astype(str).str.contains('W').astype(int)
+clean_playoff_df['GP'] = 1 
+clean_playoff_df['Goals Against Average'] = pd.to_numeric(clean_playoff_df['Goals Against'], errors='coerce')
+clean_playoff_df['Save Percentage'] = pd.to_numeric(clean_playoff_df['Save Percentage'], errors='coerce')
+
+
+clean_playoff_df['Win Percentage'] = clean_playoff_df['Wins'] / clean_playoff_df['GP']
+
+clean_playoff_df['Raw Score'] = (clean_playoff_df['Save Percentage'] * 100) + (clean_playoff_df['Win Percentage'] * 100) - clean_playoff_df['Goals Against Average']
+
+clean_playoff_df['Efficiency'] = clean_playoff_df['Raw Score'] / 2
+
+
+clean_playoff_df = clean_playoff_df.dropna(subset=['Date'])
+```
+
+Here, I have calculated the efficiency score for Brodeur’s playoff
+stats. Similar to the regular season, I used ‘Save Percentage’, ‘Win
+Percentage’, and ‘Goals Against Average’ to calculate a raw score, which
+I then divided by 2 to get an efficiency score on a more reasonable
+scale. I also had to convert the ‘Result’ column into a binary format to
+calculate wins, and set ‘GP’ to 1 for each game since each row
+represents a single game in the playoffs. Finally, I dropped any rows
+where the ‘Date’ is missing, as those would not be valid data points for
+analysis.
+
+``` python
+clean_playoff_df
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&#10;    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+&#10;    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+|  | Rank | Games Career | Games Team | Date | Team | Unnamed: 5_level_1 | Opp | Result | DEC | MIN | ... | PIM | Games Played | A | PTS | Wins | GP | Goals Against Average | Win Percentage | Raw Score | Efficiency |
+|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+| 0 | 1 | 1 | 5 | 1992-04-27 | NJD | @ | NYR | L 5-8 | 0-1-0 | 32:04 | ... | 0 | 0 | 0 | 0 | 0 | 1 | 3.0 | 0.0 | 77.0 | 38.50 |
+| 2 | 2 | 2 | 1 | 1994-04-17 | NJD | NaN | BUF | L 0-2 | 0-1-0 | 59:43 | ... | 0 | 0 | 0 | 0 | 0 | 1 | 1.0 | 0.0 | 94.5 | 47.25 |
+| 3 | 3 | 3 | 2 | 1994-04-19 | NJD | NaN | BUF | W 2-1 | 1-0-0 | 59:55 | ... | 0 | 0 | 0 | 0 | 1 | 1 | 1.0 | 1.0 | 194.8 | 97.40 |
+| 4 | 4 | 4 | 3 | 1994-04-21 | NJD | @ | BUF | W 2-1 | 1-0-0 | 60:00 | ... | 0 | 0 | 0 | 0 | 1 | 1 | 1.0 | 1.0 | 195.7 | 97.85 |
+| 5 | 5 | 5 | 4 | 1994-04-23 | NJD | @ | BUF | L 3-5 | 0-1-0 | 59:36 | ... | 0 | 0 | 0 | 0 | 0 | 1 | 5.0 | 0.0 | 78.3 | 39.15 |
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... |
+| 236 | 201 | 201 | 20 | 2012-06-02 | NJD | NaN | LAK | L 1-2 (OT) | 0-1-0 | 73:42 | ... | 0 | 0 | 0 | 0 | 0 | 1 | 2.0 | 0.0 | 91.8 | 45.90 |
+| 237 | 202 | 202 | 21 | 2012-06-04 | NJD | @ | LAK | L 0-4 | 0-1-0 | 59:55 | ... | 0 | 0 | 0 | 0 | 0 | 1 | 4.0 | 0.0 | 77.0 | 38.50 |
+| 238 | 203 | 203 | 22 | 2012-06-06 | NJD | @ | LAK | W 3-1 | 1-0-0 | 60:00 | ... | 0 | 0 | 0 | 0 | 1 | 1 | 1.0 | 1.0 | 194.5 | 97.25 |
+| 239 | 204 | 204 | 23 | 2012-06-09 | NJD | NaN | LAK | W 2-1 | 1-0-0 | 60:00 | ... | 0 | 0 | 0 | 0 | 1 | 1 | 1.0 | 1.0 | 195.2 | 97.60 |
+| 240 | 205 | 205 | 24 | 2012-06-11 | NJD | @ | LAK | L 1-6 | 0-1-0 | 59:24 | ... | 0 | 0 | 0 | 0 | 0 | 1 | 5.0 | 0.0 | 74.2 | 37.10 |
+
+<p>205 rows × 24 columns</p>
+</div>
+
+``` python
+clean_playoff_df[['Date', 'Opp', 'Result', 'Efficiency']].head(20)
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&#10;    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+&#10;    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+|     | Date       | Opp | Result     | Efficiency |
+|-----|------------|-----|------------|------------|
+| 0   | 1992-04-27 | NYR | L 5-8      | 38.50      |
+| 2   | 1994-04-17 | BUF | L 0-2      | 47.25      |
+| 3   | 1994-04-19 | BUF | W 2-1      | 97.40      |
+| 4   | 1994-04-21 | BUF | W 2-1      | 97.85      |
+| 5   | 1994-04-23 | BUF | L 3-5      | 39.15      |
+| 6   | 1994-04-25 | BUF | W 5-3      | 91.00      |
+| 7   | 1994-04-27 | BUF | L 0-1 (OT) | 48.50      |
+| 8   | 1994-04-29 | BUF | W 2-1      | 96.70      |
+| 10  | 1994-05-01 | BOS | L 1-2      | 45.55      |
+| 11  | 1994-05-03 | BOS | L 5-6 (OT) | 35.90      |
+| 12  | 1994-05-09 | BOS | W 2-0      | 100.00     |
+| 14  | 1994-05-15 | NYR | W 4-3 (OT) | 94.55      |
+| 15  | 1994-05-17 | NYR | L 0-4      | 43.00      |
+| 16  | 1994-05-19 | NYR | L 2-3 (OT) | 45.50      |
+| 17  | 1994-05-21 | NYR | W 3-1      | 97.25      |
+| 18  | 1994-05-23 | NYR | W 4-1      | 97.60      |
+| 19  | 1994-05-25 | NYR | L 2-4      | 44.20      |
+| 20  | 1994-05-27 | NYR | L 1-2 (OT) | 46.90      |
+| 22  | 1995-05-07 | BOS | W 5-0      | 100.00     |
+| 23  | 1995-05-08 | BOS | W 3-0      | 100.00     |
+
+</div>
+
+Above is a view of Brodeur’s playoff efficiency across 20 games in his
+playoff career. I specifically wanted to view the ‘Date’, ‘Opp’,
+‘Result’, and ‘Efficiency’ columns in order to observe if there are any
+trends in his efficiency based on the opponent or the result of the
+game. It is interesting to see how low the efficiency scores in games
+that he lost are despite his overall high efficiency in the playoffs.
+
+I now want to see if there is a way to visualize Brodeur’s playoff
+efficiency across his career, similar to how I visualized his regular
+season efficiency by month. I will try to plot his efficiency by year in
+the playoffs to see if there are any trends in his efficiency throughout
+his playoff career.
+
+``` python
+clean_playoff_df['Year'] = pd.to_datetime(clean_playoff_df['Date']).dt.year
+yearly_playoff_df = clean_playoff_df.groupby('Year')['Efficiency'].mean().reset_index()
+
+
+plt.figure(figsize=(12, 6)) 
+plt.plot(yearly_playoff_df['Year'], yearly_playoff_df['Efficiency'],
+         marker='o', markersize=8, color='#ce1126', linewidth=2.5)
+plt.title("Martin Brodeur's Average Playoff Efficiency by Year", fontsize=16)
+plt.xlabel("Playoff Year", fontsize=12)
+plt.ylabel("Average Efficiency Score", fontsize=12)
+plt.xticks(yearly_playoff_df['Year'], rotation=45)
+plt.show()
+```
+
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_4727/49601182.py:1: SettingWithCopyWarning:
+
+
+    A value is trying to be set on a copy of a slice from a DataFrame.
+    Try using .loc[row_indexer,col_indexer] = value instead
+
+    See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+![](readme_files/figure-commonmark/cell-17-output-2.png)
+
+Before getting to analysis of the graph, I want to explain the code
+chunk above. In this code chunk, I am grouping the playoff dataframe by
+‘Year’ and calculating the mean efficiency for each year. This will give
+us an average efficiency score for Brodeur in each playoff year.
+Following that, similar to the regular season efficiency plot, I am
+plotting the average playoff efficiency by year using a line plot. This
+allows us to follow the ebs and flows of Brodeur’s year to year playoff
+efficiency.
+
+It makes sense that in the graph here we can see that Brodeur was most
+efficient in the years that the New Jersey Devils won the Stanley Cup
+which was in 1995, 2000, & 2003. It is also interesting to see the
+fluctuations in his efficiency throughout the years, with some years
+being much higher than others. It could indicate the different types of
+teams that Brodeur and the Devils squared off against, the type of teams
+that the Devils themselves had in a given year, or the stage of
+Brodeur’s career taking its course as he aged.
