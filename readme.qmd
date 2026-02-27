@@ -179,6 +179,7 @@ april_stats_df = clean_career_df[clean_career_df['Value'] == 'April']
 Here, I am separating the stats by month in order to observe if there are any trends in Brodeur's efficiency throughout the different months of the season. This will allow me to see if there are certain months where Brodeur was more efficient than others, which could be an interesting observation to make. In doing some research, I found that a good efficiency score for a goalie is typically between 70 and 80 being elite, which Brodeur has a lot of seasons where he is in that range, which is a testament to his greatness as a goalie.
 
 # Efficiency Visualization and Analysis
+
 ```{python}
 months_order = ['October', 'November', 'December', 'January', 'February', 'March', 'April']
 monthly_stats = clean_career_df[clean_career_df['Value'].isin(months_order)].copy()
