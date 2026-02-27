@@ -105,9 +105,16 @@ if app_view == "Regular Season":
         st.pyplot(plt)
     elif month == "All Months":
         st.write("All Months Stats")
+        october_df['Month'] = 'October'
+        november_df['Month'] = 'November'
+        december_df['Month'] = 'December'
+        january_df['Month'] = 'January'
+        february_df['Month'] = 'February'
+        march_df['Month'] = 'March'
+        april_df['Month'] = 'April'
         all_months_df = pd.concat([october_df, november_df, december_df, january_df, february_df, march_df, april_df])
         st.dataframe(all_months_df)
-        st.write("All Months Efficiency Distribution")
+        st.write("Efficiency by Month")
         plt.figure(figsize=(10, 6))
         sns.barplot(data=all_months_df, x='Month', y='Efficiency', color='steelblue')
         plt.ylim(0.85, 1.0) 
