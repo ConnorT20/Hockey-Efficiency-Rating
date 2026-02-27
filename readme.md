@@ -72,7 +72,7 @@ else:
     3  59:55   1  23     24  .958    0  0  0    0  
     4  60:00   1  29     30  .967    0  0  0    0  
 
-    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_8393/194281229.py:8: FutureWarning:
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_10028/194281229.py:8: FutureWarning:
 
     Passing literal html to 'read_html' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
 
@@ -235,7 +235,7 @@ else:
     3                         34  
     4                      SH GA  
 
-    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_8393/2028733359.py:10: FutureWarning:
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_10028/2028733359.py:10: FutureWarning:
 
     Passing literal html to 'read_html' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
 
@@ -607,7 +607,7 @@ plt.xticks(yearly_playoff_df['Year'], rotation=45)
 plt.show()
 ```
 
-    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_8393/49601182.py:1: SettingWithCopyWarning:
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_10028/49601182.py:1: SettingWithCopyWarning:
 
 
     A value is trying to be set on a copy of a slice from a DataFrame.

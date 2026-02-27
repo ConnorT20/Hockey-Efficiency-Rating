@@ -7,7 +7,6 @@ format: gfm
 
 Hello and welcome to my final project for Unstructured Data! In this project, I plan to analyze stats of Hall of Fame Goalie, Martin Brodeur. I plan to scrape data from Hockey Reference in order to get his lifetime career playoff & regular season statistics. I plan on using this information to then create an efficiency score to observe when Brodeur was the most efficient in his career. Additionally, I hope to view the teams that he was most efficient against across his career.
 
-
 ```{python}
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -18,7 +17,9 @@ import time
 ```
 
 # Data Collection
+
 Here I am going to be scraping data from Hockey Reference. I will be scraping both Brodeur's regular season and playoff stats. I will then clean the data and prepare it for my analysis and efficiency score calculations. My main form of scraping will be using BeautifulSoup to pull the HTML content of the pages and then using pandas to read the tables into dataframes. 
+
 ```{python}
 brod_playoff_url = "https://www.hockey-reference.com/players/b/brodema01/gamelog/playoffs"
 headers = {
@@ -261,6 +262,7 @@ april_stats_df.to_csv('april_stats_df.csv', index=False)
 ```
 
 Here, I worked with Seth to build out a streamlit app to visualize Brodeur's efficiency in a more interactive way. In doing so, I had to export all of the dataframes that I created and cleaned in order to use them in the streamlit app. Below is the link to the streamlit app that we built out to visualize Brodeur's efficiency in both the regular season and playoffs. In the app, you can select different months to see how Brodeur's efficiency fluctuated throughout the regular season, as well as select different playoff years to see how his efficiency fluctuated throughout his playoff career.
+
 ```{python}
 app_url = "https://hockeyefficiency.streamlit.app"
 ```

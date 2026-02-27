@@ -3,11 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
-#add a title page for the app
+# Set the page title and description
 st.title("Hockey Player Efficiency Analysis")
-#add a description of the app
-st.write("Explore the efficiency of hockey players across different months of the regular season, the playoffs, and their careers. You can select a month from the regular season or playoffs from the sidebar. You can also select a player from the dropdown menu to see their stats and efficiency distribution for the selected month or playoff efficiency by year.")
+st.write("Explore the efficiency of hockey players across different months of the regular season, the playoffs, and their careers.")
 
 #import the data
 october_df = pd.read_csv("october_stats_df.csv")
@@ -129,6 +127,7 @@ elif app_view == "Playoffs":
         plt.ylabel("Frequency")
         plt.title("Distribution of Martin Brodeur's Playoff Efficiency by Year")
         st.pyplot(plt)
+
 
 
 
