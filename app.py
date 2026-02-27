@@ -117,7 +117,7 @@ if app_view == "Regular Season":
 elif app_view == "Playoffs":
     
     playoff_efficiency = st.sidebar.selectbox("Select Playoff Efficiency", ("Playoff Efficiency by Year",))
-    playoff_opponent = st.sidebar.selectbox("Select Playoff Opponent", ("Opponent 1", "Opponent 2", "Opponent 3"))
+    
 
     if playoff_efficiency == "Playoff Efficiency by Year":
         st.write("Playoff Efficiency by Year")
