@@ -72,7 +72,7 @@ else:
     3  59:55   1  23     24  .958    0  0  0    0  
     4  60:00   1  29     30  .967    0  0  0    0  
 
-    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_4727/194281229.py:8: FutureWarning:
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_6257/194281229.py:8: FutureWarning:
 
     Passing literal html to 'read_html' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
 
@@ -235,7 +235,7 @@ else:
     3                         34  
     4                      SH GA  
 
-    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_4727/2028733359.py:10: FutureWarning:
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_6257/2028733359.py:10: FutureWarning:
 
     Passing literal html to 'read_html' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
 
@@ -607,7 +607,7 @@ plt.xticks(yearly_playoff_df['Year'], rotation=45)
 plt.show()
 ```
 
-    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_4727/49601182.py:1: SettingWithCopyWarning:
+    /var/folders/vy/pldbp8tx5bzcr752wcc7m57h0000gn/T/ipykernel_6257/49601182.py:1: SettingWithCopyWarning:
 
 
     A value is trying to be set on a copy of a slice from a DataFrame.
@@ -634,3 +634,30 @@ being much higher than others. It could indicate the different types of
 teams that Brodeur and the Devils squared off against, the type of teams
 that the Devils themselves had in a given year, or the stage of
 Brodeur’s career taking its course as he aged.
+
+``` python
+clean_career_df.to_csv('clean_career_df.csv', index=False)
+clean_playoff_df.to_csv('clean_playoff_df.csv', index=False)
+yearly_playoff_df.to_csv('yearly_playoff_df.csv', index=False)
+october_stats_df.to_csv('october_stats_df.csv', index=False)
+november_stats_df.to_csv('november_stats_df.csv', index=False)
+december_stats_df.to_csv('december_stats_df.csv', index=False)
+january_stats_df.to_csv('january_stats_df.csv', index=False)
+february_stats_df.to_csv('february_stats_df.csv', index=False)
+march_stats_df.to_csv('march_stats_df.csv', index=False)
+april_stats_df.to_csv('april_stats_df.csv', index=False)
+```
+
+Here, I worked with Seth to build out a streamlit app to visualize
+Brodeur’s efficiency in a more interactive way. In doing so, I had to
+export all of the dataframes that I created and cleaned in order to use
+them in the streamlit app. Below is the link to the streamlit app that
+we built out to visualize Brodeur’s efficiency in both the regular
+season and playoffs. In the app, you can select different months to see
+how Brodeur’s efficiency fluctuated throughout the regular season, as
+well as select different playoff years to see how his efficiency
+fluctuated throughout his playoff career.
+
+``` python
+app_url = "https://hockeyefficiency.streamlit.app"
+```
