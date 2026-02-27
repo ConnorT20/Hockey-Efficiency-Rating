@@ -19,11 +19,13 @@ clean_playoff_df = pd.read_csv("clean_playoff_df.csv")
 clean_career_df = pd.read_csv("clean_career_df.csv")
 yearly_playoff_df = pd.read_csv("yearly_playoff_df.csv")
 
-#create a dropdown menu to select the player
+# create a dropdown menu to select the player
 dropdown = st.selectbox("Select Player", ("Martin Brodeur", "Player 2", "Player 3"))
 
 # create a master navigation menu in the sidebar
 app_view = st.sidebar.radio("Navigation", ["Regular Season", "Playoffs"])
+
+# create tabs for each season
 
 if app_view == "Regular Season":
     
