@@ -30,20 +30,9 @@ app_view = st.sidebar.radio("Navigation", ["Regular Season", "Playoffs"])
 st.write("")
 if app_view == "Regular Season":
     
-    month = st.sidebar.selectbox("Select Month", ("October", "November", "December", "January", "February", "March", "April", "All Months"))
+    month = st.sidebar.selectbox("Select Month", ("All Months", "October", "November", "December", "January", "February", "March", "April"))
     
-    if month == "All Months":
-        st.write("All Months Stats")
-        all_months_df = pd.concat([october_df, november_df, december_df, january_df, february_df, march_df, april_df])
-        st.dataframe(all_months_df)
-        st.write("All Months Efficiency Distribution")
-        plt.figure(figsize=(10, 6))
-        sns.histplot(all_months_df['Efficiency'], bins=20, kde=True)
-        plt.xlabel("Efficiency")
-        plt.ylabel("Frequency")
-        plt.title("Distribution of Martin Brodeur's Efficiency in All Months")
-        st.pyplot(plt)
-    elif month == "October":
+    if month == "October":
         st.write("October Stats")
         st.dataframe(october_df)
         st.write("October Efficiency Distribution")
@@ -114,7 +103,17 @@ if app_view == "Regular Season":
         plt.ylabel("Frequency")
         plt.title("Distribution of Martin Brodeur's Efficiency in April")
         st.pyplot(plt)
-   
+    elif month == "All Months":
+        st.write("All Months Stats")
+        all_months_df = pd.concat([october_df, november_df, december_df, january_df, february_df, march_df, april_df])
+        st.dataframe(all_months_df)
+        st.write("All Months Efficiency Distribution")
+        plt.figure(figsize=(10, 6))
+        sns.histplot(all_months_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in All Months")
+        st.pyplot(plt)
         
 elif app_view == "Playoffs":
     
