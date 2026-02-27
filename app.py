@@ -3,8 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-#add a title for the app
-st.title("Martin Brodeur Playoff Efficiency Analysis")
+
+#add a title page for the app
+st.title("Hockey Player Efficiency Analysis")
+#add a description of the app
+st.write("Explore the efficiency of hockey players across different months of the regular season. You can select a month from the sidebar to view the statistics and distribution of efficiency for that month.")
+
 #import the data
 october_df = pd.read_csv("october_stats_df.csv")
 november_df = pd.read_csv("november_stats_df.csv")
@@ -13,43 +17,119 @@ january_df = pd.read_csv("january_stats_df.csv")
 february_df = pd.read_csv("february_stats_df.csv")
 march_df = pd.read_csv("march_stats_df.csv")
 april_df = pd.read_csv("april_stats_df.csv")
+clean_playoff_df = pd.read_csv("clean_playoff_df.csv")
+clean_career_df = pd.read_csv("clean_career_df.csv")
+yearly_playoff_df = pd.read_csv("yearly_playoff_df.csv")
+
+#create a dropdown menu to select the player
+dropdown = st.selectbox("Select Player", ("Martin Brodeur", "Player 2", "Player 3"))
+
+# create a master navigation menu in the sidebar
+app_view = st.sidebar.radio("Navigation", ["Regular Season", "Playoffs"])
+
+if app_view == "Regular Season":
+    
+    month = st.sidebar.selectbox("Select Month", ("October", "November", "December", "January", "February", "March", "April", "All Months"))
+    
+    if month == "October":
+        st.write("October Stats")
+        st.dataframe(october_df)
+        st.write("October Efficiency Distribution")
+        plt.figure(figsize=(10, 6)) 
+        sns.histplot(october_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in October")
+        st.pyplot(plt)
+        
+    elif month == "November":
+        st.write("November Stats")
+        st.dataframe(november_df)
+        st.write("November Efficiency Distribution")
+        plt.figure(figsize=(10, 6))
+        sns.histplot(november_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in November")
+        st.pyplot(plt)
+    elif month == "December":
+        st.write("December Stats")
+        st.dataframe(december_df)
+        st.write("December Efficiency Distribution")
+        plt.figure(figsize=(10, 6))
+        sns.histplot(december_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in December")
+        st.pyplot(plt)
+    elif month == "January":
+        st.write("January Stats")
+        st.dataframe(january_df)
+        st.write("January Efficiency Distribution")
+        plt.figure(figsize=(10, 6))  
+        sns.histplot(january_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in January")
+        st.pyplot(plt)
+    elif month == "February":  
+        st.write("February Stats")
+        st.dataframe(february_df)
+        st.write("February Efficiency Distribution")
+        plt.figure(figsize=(10, 6))
+        sns.histplot(february_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in February")
+        st.pyplot(plt)
+    elif month == "March":
+        st.write("March Stats")
+        st.dataframe(march_df)
+        st.write("March Efficiency Distribution")
+        plt.figure(figsize=(10, 6))
+        sns.histplot(march_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in March")
+        st.pyplot(plt)
+    elif month == "April":
+        st.write("April Stats")
+        st.dataframe(april_df)
+        st.write("April Efficiency Distribution")
+        plt.figure(figsize=(10, 6))
+        sns.histplot(april_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in April")
+        st.pyplot(plt)
+    elif month == "All Months":
+        st.write("All Months Stats")
+        all_months_df = pd.concat([october_df, november_df, december_df, january_df, february_df, march_df, april_df])
+        st.dataframe(all_months_df)
+        st.write("All Months Efficiency Distribution")
+        plt.figure(figsize=(10, 6))
+        sns.histplot(all_months_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Efficiency in All Months")
+        st.pyplot(plt)
+        
+elif app_view == "Playoffs":
+    
+    playoff_efficiency = st.sidebar.selectbox("Select Playoff Efficiency", ("Playoff Efficiency by Year",))
+    playoff_opponent = st.sidebar.selectbox("Select Playoff Opponent", ("Opponent 1", "Opponent 2", "Opponent 3"))
+
+    if playoff_efficiency == "Playoff Efficiency by Year":
+        st.write("Playoff Efficiency by Year")
+        st.dataframe(yearly_playoff_df)
+        st.write("Playoff Efficiency Distribution by Year")
+        plt.figure(figsize=(10, 6))
+        sns.histplot(yearly_playoff_df['Efficiency'], bins=20, kde=True)
+        plt.xlabel("Efficiency")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Martin Brodeur's Playoff Efficiency by Year")
+        st.pyplot(plt)
 
 
-#sidebar to select month
-month = st.sidebar.selectbox("Select Month", ("October", "November", "December", "January", "February", "March", "April"))
-#display the selected month data and visualization
-if month == "October":
-    st.write("October Stats")
-    st.dataframe(october_df)
-    st.write("October Efficiency Distribution")
-    plt.figure(figsize=(10, 6))
-    sns.histplot(october_df['Efficiency'], bins=20, kde=True)
-    plt.xlabel("Efficiency")
-    plt.ylabel("Frequency")
-    plt.title("Distribution of Martin Brodeur's Efficiency in October")
-    st.pyplot(plt)
-elif month == "November":
-    st.write("November Stats")
-    st.dataframe(november_df)
-    st.write("November Efficiency Distribution")
-    plt.figure(figsize=(10, 6))
-    sns.histplot(november_df['Efficiency'], bins=20, kde=True)
-    plt.xlabel("Efficiency")
-    plt.ylabel("Frequency")
-    plt.title("Distribution of Martin Brodeur's Efficiency in November")
-    st.pyplot(plt)
-elif month == "December":
-    st.write("December Stats")
-    st.dataframe(december_df)
-elif month == "January":
-    st.write("January Stats")
-    st.dataframe(january_df)
-elif month == "February":
-    st.write("February Stats")
-    st.dataframe(february_df)
-elif month == "March":
-    st.write("March Stats")
-    st.dataframe(march_df)
-elif month == "April":
-    st.write("April Stats")
-    st.dataframe(april_df)
+
+

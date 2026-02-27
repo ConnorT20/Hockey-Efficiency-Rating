@@ -264,3 +264,5 @@ Here, I worked with Seth to build out a streamlit app to visualize Brodeur's eff
 ```{python}
 app_url = "https://hockeyefficiency.streamlit.app"
 ```
+
+Though this is a prototype, I plan to continue to build out the streamlit app to include more players as a more interactive way to visualize and compare the efficiency of different skaters and goalies across different eras of hockey and different stages of their careers. I also want to include more visualizations and analysis in the app to make it more engaging and informative for those who visit the app.
